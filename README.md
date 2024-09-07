@@ -1,52 +1,30 @@
-# Webcash
+# webcash-rb
 
-TODO: Delete this and the text below, and describe your gem
+Webcash is an experimental electronic cash library for decentralized payments.
+Webcash facilitates decentralized, peer-to-peer electronic cash transactions. It allows users to send webcash directly to one another and includes mechanisms for detecting double-spending and maintaining monetary supply integrity.
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/webcash`. To experiment with that code, run `bin/console` for an interactive prompt.
-
---    validateAmountDecimals,
---    decimalAmountToString,
---    stringAmountToDecimal,
---    parseAmountFromString,
---    convertSecretValueToPublicValue,
---    deserializeWebcash,
---    createWebcashWithRandomSecretFromAmount,
---    PublicWebcash,
---    SecretWebcash,
-    WebcashWallet,
-    -- insert
-    -- pay
-    -- process_healthcheck_results
-    -- check
-    -- recover
-
---    generateRandomValue,
---    hexToBytes,
---    hexToPaddedBytes,
---    paddedBytes,
---    longToByteArray,
---    chunkArray,
---    range,
+Navigate to https://webcash.org/ for more information, including the Terms of Service.
 
 ## Installation
-
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
 
 Install the gem and add to the application's Gemfile by executing:
 
 ```bash
-bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+bundle add webcash-rb
 ```
 
 If bundler is not being used to manage dependencies, install the gem by executing:
 
 ```bash
-gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+gem install webcash-rb
 ```
 
 ## Usage
+```ruby
+require "webcash"
 
-TODO: Write usage instructions here
+wallet = Webcash::Wallet.new()
+```
 
 ## Development
 
@@ -56,7 +34,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/webcash. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/webcash/blob/master/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/acidtib/webcash-rb. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/acidtib/webcash-rb/blob/master/CODE_OF_CONDUCT.md).
 
 ## License
 
@@ -64,4 +42,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Webcash project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/webcash/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Webcash project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/acidtib/webcash-rb/blob/master/CODE_OF_CONDUCT.md).
