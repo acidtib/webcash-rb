@@ -23,7 +23,27 @@ gem install webcash-rb
 ```ruby
 require "webcash"
 
-wallet = Webcash::Wallet.new()
+wallet = Webcash::Wallet.new(
+  master_secret: "19be5ea41c71836f78b5691fe69af918a5f003719b7a7e2a30533737c04521fc",
+)
+
+# Set the legal agreements to true
+wallet.set_legal_agreements_to_true
+
+# Recover webcash using the wallet's master secret.
+wallet.recover
+
+# Check webcash in wallet. Remove any spent webcash.
+wallet.check
+
+# Insert webcash into the wallet.
+wallet.insert("e20:secret:8c2e565a1649b03052833c508b237bacd2c62995c7e8ed5dc9fe644850808192")
+
+# Pay webcash from the wallet.
+wallet.pay(4.20)
+
+# Get wallet balance
+pp wallet.get_balance
 ```
 
 ## Development

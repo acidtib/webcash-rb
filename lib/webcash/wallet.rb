@@ -187,7 +187,6 @@ module Webcash
       new_webcash.to_s
     end
 
-
     def pay(amount, memo = "")
       amount = BigDecimal(amount.to_s)
 
