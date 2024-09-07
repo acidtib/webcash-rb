@@ -120,7 +120,7 @@ RSpec.describe Webcash::Helpers do
       webcash_str = described_class.create_webcash_with_random_secret_from_amount(amount)
 
       # Ensure the generated string matches the expected pattern
-      expect(webcash_str).to match(/e100\.0:secret:[A-Za-z0-9+\/=]{43}/)
+      expect(webcash_str).to match(/e#{amount.to_s('F')}:secret:[A-Za-z0-9+\/=]{32}/)
 
       # Deserialize the webcash string and check the amount
       webcash = Webcash::Secret.deserialize(webcash_str)
@@ -156,6 +156,66 @@ RSpec.describe Webcash::Helpers do
     it "returns '?' when amount is nil" do
       result = described_class.decimal_amount_to_string(nil)
       expect(result).to eq("?")
+    end
+  end
+
+  describe '.hex_to_padded_bytes' do
+    it 'converts hex to padded bytes' do
+      expect(described_class.hex_to_padded_bytes("0xfeedbeef")).to eq([ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xfe, 0xed, 0xbe, 0xef ])
+    end
+  end
+
+  describe '.hex_to_bytes' do
+    it 'converts hex string to bytes' do
+      expect(described_class.hex_to_bytes("0xfeedbeef")).to eq([ 254, 237, 190, 239 ])
+    end
+  end
+
+  describe '.padded_bytes' do
+    it 'pads bytes array to the target length' do
+      expect(described_class.padded_bytes([ 0 ], 8)).to eq([ 0, 0, 0, 0, 0, 0, 0, 0 ])
+      expect(described_class.padded_bytes([ 1 ], 8)).to eq([ 0, 0, 0, 0, 0, 0, 0, 1 ])
+    end
+
+    it 'raises an error if bytes array is too large' do
+      expect { described_class.padded_bytes([ 1 ] * 33, 32) }.to raise_error(RuntimeError, /Can only handle up to 32 bytes/)
+    end
+  end
+
+  describe '.long_to_byte_array' do
+    it 'converts a number to a byte array' do
+      expect(described_class.long_to_byte_array(1).reverse).to eq([ 0, 0, 0, 0, 0, 0, 0, 1 ])
+      expect(described_class.long_to_byte_array(1234).reverse).to eq([ 0, 0, 0, 0, 0, 0, 4, 210 ])
+      expect(described_class.long_to_byte_array(100000000).reverse).to eq([ 0, 0, 0, 0, 5, 245, 225, 0 ])
+    end
+  end
+
+  describe '.assert_is_array' do
+    it 'does not raise an error for a valid number array' do
+      expect { described_class.assert_is_array([ 1, 2, 3 ]) }.not_to raise_error
+    end
+
+    it 'raises an error for non-array inputs' do
+      expect { described_class.assert_is_array('string') }.to raise_error(RuntimeError, /This method only supports number arrays but input was: string/)
+    end
+
+    it 'raises an error for arrays containing non-integer elements' do
+      expect { described_class.assert_is_array([ 1, 2, 'string' ]) }.to raise_error(RuntimeError, /This method only supports number arrays but input was: \[1, 2, "string"\]/)
+    end
+  end
+
+  describe '.sha256_from_array' do
+    it 'computes SHA256 hash from a number array' do
+      # Example input and expected output
+      input = [ 1, 2, 3, 4 ]
+      expected_output = Digest::SHA256.digest([ 1, 2, 3, 4 ].pack('C*'))
+
+      expect(described_class.sha256_from_array(input)).to eq(expected_output)
+    end
+
+    it 'raises an error for invalid inputs' do
+      expect { described_class.sha256_from_array('string') }.to raise_error(RuntimeError, /This method only supports number arrays but input was: string/)
+      expect { described_class.sha256_from_array([ 1, 2, 'string' ]) }.to raise_error(RuntimeError, /This method only supports number arrays but input was: \[1, 2, "string"\]/)
     end
   end
 end

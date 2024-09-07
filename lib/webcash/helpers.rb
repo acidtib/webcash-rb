@@ -97,7 +97,7 @@ module Webcash
     def self.string_amount_to_decimal(amount)
       BigDecimal(amount)
     end
-    
+
 
     # Convert a decimal amount to a string. This is used for representing
     # different webcash when serializing webcash. When the amount is not known,
@@ -115,8 +115,64 @@ module Webcash
     end
 
     def self.create_webcash_with_random_secret_from_amount(amount)
-      random_value = SecureRandom.random_bytes(32)
-      "e#{amount.to_s('F')}:secret:#{Base64.strict_encode64(random_value)}"
+      "e#{amount.to_s('F')}:secret:#{generate_random_value(32)}"
+    end
+
+    def self.hex_to_padded_bytes(hex, padding_target_length = 32)
+      bytes = [ hex.sub(/^0x/, "") ].pack("H*").bytes
+      padded_bytes = Array.new(padding_target_length - bytes.length, 0) + bytes
+      padded_bytes
+    end
+
+    def self.convert_secret_hex_to_bytes(secret)
+      hex_to_padded_bytes(secret)
+    end
+
+    def self.hex_to_bytes(hex)
+      hex = hex.sub(/^0x/i, "")
+      hex.scan(/../).map { |x| x.hex }
+    end
+
+    def self.padded_bytes(bytes, padding_target_length = 32)
+      if bytes.length == padding_target_length
+        bytes
+      elsif bytes.length > padding_target_length
+        raise "Can only handle up to #{padding_target_length} bytes, int too big to convert"
+      else
+        padding_needed = padding_target_length - bytes.length
+        Array.new(padding_needed, 0) + bytes
+      end
+    end
+
+    def self.long_to_byte_array(num)
+      byte_array = Array.new(8, 0)
+
+      (0...byte_array.length).each do |index|
+        byte_array[index] = num & 0xff
+        num >>= 8
+      end
+
+      byte_array
+    end
+
+    def self.assert_is_array(input)
+      unless input.is_a?(Array) && input.all? { |e| e.is_a?(Integer) }
+        raise "This method only supports number arrays but input was: #{input}"
+      end
+    end
+
+    def self.sha256_from_array(array)
+      assert_is_array(array)
+
+      # Convert the array of integers to a binary string
+      binary_string = array.pack("C*")
+
+      # Create and return the SHA256 digest
+      Digest::SHA256.digest(binary_string)
+    end
+
+    def self.generate_random_value(length)
+      (1..length).map { rand(16).to_s(16) }.join
     end
   end
 end

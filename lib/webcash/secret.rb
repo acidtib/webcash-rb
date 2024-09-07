@@ -4,6 +4,7 @@
 
 module Webcash
   class Secret
+    attr_accessor :amount
     attr_reader :amount, :secret_value
 
     def initialize(amount, secret_value)
@@ -33,7 +34,6 @@ module Webcash
     def to_s
       "e#{@amount.to_s('F').sub(/\.0+$/, '')}:secret:#{@secret_value}"
     end
-
 
     def ==(other)
       other.is_a?(Webcash::Secret) && @amount == other.amount && @secret_value == other.secret_value

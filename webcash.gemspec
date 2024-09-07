@@ -39,6 +39,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "digest", "~> 3.1"
   spec.add_dependency "base64", "~> 0.2"
   spec.add_dependency "securerandom", "~> 0.3.1"
+  spec.add_dependency "httparty", "~> 0.22"
 
   # Development dependencies
   spec.add_development_dependency 'pry'

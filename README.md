@@ -14,10 +14,16 @@ Welcome to your new gem! In this directory, you'll find the files you need to be
 --    PublicWebcash,
 --    SecretWebcash,
     WebcashWallet,
-    generateRandomValue,
-    hexToBytes,
-    hexToPaddedBytes,
-    paddedBytes,
+    -- insert
+    -- pay
+    -- process_healthcheck_results
+    -- check
+    -- recover
+
+--    generateRandomValue,
+--    hexToBytes,
+--    hexToPaddedBytes,
+--    paddedBytes,
 --    longToByteArray,
 --    chunkArray,
 --    range,
